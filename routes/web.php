@@ -4,6 +4,7 @@ use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\UserSessionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ListingController;
 
 Route::get('/', function() {
     return Inertia::render('Index/Index');
@@ -13,9 +14,8 @@ Route::get('/about', function() {
     return Inertia::render('Index/About');
 })->name('about')->middleware('auth');
 
-Route::get('/listings', function() {
-    return Inertia::render('Index/Listings');
-})->name('listings');
+
+Route::get('/listings', [ListingController::class, 'index'])->name('index.listings');
 
 Route::get('/register', [UserRegistrationController::class, 'create']);
 Route::post('/register', [UserRegistrationController::class, 'store']);
