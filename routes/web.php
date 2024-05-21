@@ -9,6 +9,14 @@ Route::get('/', function() {
     return Inertia::render('Index/Index');
 })->name('home')->middleware('auth');
 
+Route::get('/about', function() {
+    return Inertia::render('Index/About');
+})->name('about')->middleware('auth');
+
+Route::get('/listings', function() {
+    return Inertia::render('Index/Listings');
+})->name('listings');
+
 Route::get('/register', [UserRegistrationController::class, 'create']);
 Route::post('/register', [UserRegistrationController::class, 'store']);
 
