@@ -11,8 +11,18 @@ class ListingController extends Controller
     public function index()
     {
         //this will get all of our listings
-        $listings = Listing::all();
-        return Inertia::render('Index/Listings', ['listings' => $listings]);
+        {
+            $listings = Listing::all();
+            $authUser = auth()->user();
+
+            return Inertia::render('Index/Listings', [
+                'listings' => $listings,
+                'auth' => [
+                    'user' => $authUser,
+                    'roles' => $authUser ? $authUser->getRoleNames() : [], // Fetch user roles
+                ],
+            ]);
+        }
     }
 
     public function store(Request $request)
