@@ -7,15 +7,33 @@ import { defineProps } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 
+// Define interfaces for the props
+interface Listing {
+  id: number;
+  title: string;
+  company: string;
+  description: string;
+  user_id: number;
+}
+
+interface Auth {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  roles: string[];
+}
+
 // Define the props to receive listings and auth data
-const props = defineProps({
-  listings: Array,
-  auth: Object, // Authenticated user data
-});
+const props = defineProps<{
+  listings: Listing[];
+  auth: Auth;
+}>();
 defineOptions({ layout: AppLayout });
 
 // State to manage the currently edited listing
-const currentlyEditing = ref(null);
+const currentlyEditing = ref<Listing | null>(null);
 
 // Method to delete a listing
 const deleteListing = (id: number) => {
@@ -28,7 +46,7 @@ const deleteListing = (id: number) => {
 };
 
 // Method to set the currently editing listing
-const editListing = (listing) => {
+const editListing = (listing: Listing) => {
   currentlyEditing.value = listing;
 };
 </script>
@@ -65,4 +83,5 @@ const editListing = (listing) => {
     </div>
   </div>
 </template>
+
 
