@@ -16,6 +16,7 @@ Route::get('/about', function() {
 
 
 Route::get('/listings', [ListingController::class, 'index'])->name('index.listings');
+Route::post('/listings', [ListingController::class, 'store'])->middleware('auth');
 
 Route::get('/register', [UserRegistrationController::class, 'create']);
 Route::post('/register', [UserRegistrationController::class, 'store']);
