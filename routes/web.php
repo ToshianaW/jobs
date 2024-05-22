@@ -17,6 +17,9 @@ Route::get('/about', function() {
 
 Route::get('/listings', [ListingController::class, 'index'])->name('index.listings');
 Route::post('/listings', [ListingController::class, 'store'])->middleware('auth');
+Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
+Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
+Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
 
 Route::get('/register', [UserRegistrationController::class, 'create']);
 Route::post('/register', [UserRegistrationController::class, 'store']);
