@@ -82,7 +82,11 @@ const enquireAboutJob = (listing: Listing) => {
           label="Delete"
           @click="deleteListing(listing.id)"
         />
-        <Button label="Enquire" @click="enquireAboutJob(listing)" />
+        <Button
+          v-if="props.auth.user.id !- listing.user_id || props.auth.roles.includes ('admin')"
+          label="Enquire"
+          @click="enquireAboutJob(listing)"
+        />
       </div>
 
       <!-- Conditionally render the EditDeleteListing component -->
