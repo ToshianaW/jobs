@@ -49,6 +49,15 @@ const deleteListing = (id: number) => {
 const editListing = (listing: Listing) => {
   currentlyEditing.value = listing;
 };
+
+// Method to handle job enquiry
+const enquireAboutJob = (listing: Listing) => {
+  // Trigger the event by making a POST request to the backend
+  const form = useForm({});
+  form.post(`/listings/${listing.id}/enquire`, {
+    onSuccess: () => alert('Enquiry sent successfully!'),
+  });
+};
 </script>
 
 <template>
@@ -64,21 +73,22 @@ const editListing = (listing: Listing) => {
       <!-- Conditionally render the edit and delete buttons -->
       <div class="flex space-x-4">
         <Button
-            v-if="props.auth.user.id === listing.user_id || props.auth.roles.includes('admin')"
-            label="Edit"
-            @click="editListing(listing)"
+          v-if="props.auth.user.id === listing.user_id || props.auth.roles.includes('admin')"
+          label="Edit"
+          @click="editListing(listing)"
         />
         <Button
-            v-if="props.auth.user.id === listing.user_id || props.auth.roles.includes('admin')"
-            label="Delete"
-            @click="deleteListing(listing.id)"
+          v-if="props.auth.user.id === listing.user_id || props.auth.roles.includes('admin')"
+          label="Delete"
+          @click="deleteListing(listing.id)"
         />
+        <Button label="Enquire" @click="enquireAboutJob(listing)" />
       </div>
 
       <!-- Conditionally render the EditDeleteListing component -->
       <EditDeleteListing
-          v-if="currentlyEditing && currentlyEditing.id === listing.id"
-          :listing="currentlyEditing"
+        v-if="currentlyEditing && currentlyEditing.id === listing.id"
+        :listing="currentlyEditing"
       />
     </div>
   </div>

@@ -21,6 +21,8 @@ Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name
 Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
 Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
 
+Route::post('/listings/{listing}/enquire', [ListingController::class, 'enquire'])->name('listings.enquire');
+
 Route::get('/register', [UserRegistrationController::class, 'create']);
 Route::post('/register', [UserRegistrationController::class, 'store']);
 

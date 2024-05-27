@@ -1,28 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Events\JobEnquired;
 
 class ListingController extends Controller
 {
     public function index()
     {
-        //this will get all of our listings
-        {
-            $listings = Listing::all();
-            $authUser = auth()->user();
+        $listings = Listing::all();
+        $authUser = auth()->user();
 
-            return Inertia::render('Index/Listings', [
-                'listings' => $listings,
-                'auth' => [
-                    'user' => $authUser,
-                    'roles' => $authUser ? $authUser->getRoleNames() : [], // Fetch user roles
-                ],
-            ]);
-        }
+        return Inertia::render('Index/Listings', [
+            'listings' => $listings,
+            'auth' => [
+                'user' => $authUser,
+                'roles' => $authUser ? $authUser->getRoleNames() : [], // Fetch user roles
+            ],
+        ]);
     }
 
     public function store(Request $request)
@@ -49,6 +49,9 @@ class ListingController extends Controller
             // Redirect back to the listings index page
             return redirect()->route('home');
         }
+
+        // Return a response indicating failure (e.g., if the user is not authenticated)
+        return redirect()->route('login');
     }
 
     public function edit(Listing $listing)
@@ -76,5 +79,17 @@ class ListingController extends Controller
     {
         $listing->delete();
         return redirect()->route('home');
+    }
+
+    public function enquire(Request $request, Listing $listing)
+    {
+        $enquirerEmail = $request->user()->email;
+
+        // Log the enquirer email and listing owner email
+        Log::info('Enquirer email: ' . $enquirerEmail);
+        Log::info('Listing owner email: ' . $listing->user->email);
+
+        event(new JobEnquired($listing, $enquirerEmail));
+        return redirect()->back()->with('message', 'Enquiry sent successfully');
     }
 }
